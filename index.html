@@ -7,24 +7,21 @@
         #game-board {
             margin-left: auto;
             margin-right: auto;
-            display:block;
-        }
-        #row1-col1,#row1-col2,
-        #row2-col1,#row2-col2 { 
-            border-right: solid;
-            border-bottom: solid;
-        }
-        #row3-col1,#row3-col2 {
-            border-right: solid;
-        }
-        #row1-col3,#row2-col3 {
-            border-bottom: solid;
+            display:grid;
+            width: 75%;
+            height: 75%;
+            box-align: center;
         }
         .row {
             display: block;
+            border-bottom: solid;
+            padding: 10%;
         }
         .col {
             display: inline-block;
+            padding-right:30%;
+            font-size: 40px;
+            text-align: center;
         }
 
     </style>
@@ -34,27 +31,27 @@
 <div>
     <div id='game-board'>
         <div id='row1' class='row'>
-            <div id='row1-col1' class='col' onclick="togglePlace">x</div>
-            <div id='row1-col2' class='col' onclick="togglePlace">x</div>
-            <div id='row1-col3' class='col' onclick="togglePlace">x</div>
+            <div id='row1-col1' class='col' onclick="togglePlace(event)">click here</div>
+            <div id='row1-col2' class='col' onclick="togglePlace(event)">click here</div>
+            <div id='row1-col3' class='col' onclick="togglePlace(event)">click here</div>
         </div>
 
     <div id='row2' class='row'>
-        <div id='row2-col1' class='col' onclick="togglePlace">x</div>
-        <div id='row2-col2' class='col' onclick="togglePlace">x</div>
-        <div id='row2-col3' class='col' onclick="togglePlace">x</div>
+        <div id='row2-col1' class='col' onclick="togglePlace(event)"></div>
+        <div id='row2-col2' class='col' onclick="togglePlace(event)"></div>
+        <div id='row2-col3' class='col' onclick="togglePlace(event)"></div>
     </div>
     
     <div id='row3' class='row'>
-        <div id='row3-col1' class='col' onclick="togglePlace">x</div>
-        <div id='row3-col2' class='col' onclick="togglePlace">x</div>
-        <div id='row3-col3' class='col' onclick="togglePlace">x</div>
+        <div id='row3-col1' class='col' onclick="togglePlace(event)"></div>
+        <div id='row3-col2' class='col' onclick="togglePlace(event)"></div>
+        <div id='row3-col3' class='col' onclick="togglePlace(event)"></div>
     </div>
 </div>
 
 
 </div>  
-<script src='./App.js'></script>
+<script src='App.js'></script>
 
 </body>
 </html>
