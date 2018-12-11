@@ -1,5 +1,4 @@
 //Game State Global Variables
-
 var gameState = {
     X: {
         spaces: [],
@@ -22,20 +21,18 @@ var togglePlace = (event) => {
         gameState[gameState.currentPlayer].spaces.push(event.target.id);
         checkGameStatus(gameState[gameState.currentPlayer].spaces);
         gameState.currentPlayer = gameState.currentPlayer === 'X' ? 'O' : 'X';
-        document.getElementById('current-player').textContent = gameState[gameState.currentPlayer].playerName;
-        
+        document.getElementById('current-player').textContent = gameState[gameState.currentPlayer].playerName;        
     }
 }
+
 //Check Game State
 var checkGameStatus = (spaces) => {
-
     var rows = { 1:3, 2:3, 3:3 };
     var columns = { 1:3, 2:3, 3:3 };
     var diagonal1 = ['1-1','2-2','3-3'];
     var diagonal2 = ['3-1','2-2','1-3'];
     var diagonal1Total = 3;
     var diagonal2Total = 3;
-
     spaces.forEach(place => {
         row = place.split('-')[0];
         col = place.split('-')[1];
@@ -48,13 +45,13 @@ var checkGameStatus = (spaces) => {
             gameState.gameOver = true;
             
         }
-    });
-    
+    });    
     if (gameState.X.spaces.concat(gameState.O.spaces).length === 9 && !gameState.gameOver) {
         gameState.gameOver = true;
         endGame();
     }
 }
+
 //Display game outcome
 var endGame = (player) => {
     if (player) {
@@ -65,6 +62,7 @@ var endGame = (player) => {
         alert('Tie Game');
     }
 }
+
 //Reset all values
 var clearBoard = () => {
     var places = document.getElementsByClassName('col');
@@ -75,6 +73,7 @@ var clearBoard = () => {
     gameState.O.spaces = [];
     gameState.gameOver = false;
 }
+
 //Helper function to check if any arguments are zero
 var anyZero = function () {
     var output = false;
@@ -91,5 +90,4 @@ var setPlayerNames = () => {
     document.getElementById(`X-games`).textContent = `${gameState.X.playerName}: ${gameState.X.gamesWon}`;
     document.getElementById(`O-games`).textContent = `${gameState.O.playerName}: ${gameState.O.gamesWon}`;
     document.getElementById('current-player').textContent = gameState[gameState.currentPlayer].playerName;
-
 }
