@@ -33,7 +33,12 @@
 <div>
     <div id='clear' onclick='clearBoard()'>Clear Board</div>
     <div>Current Player: <div id='current-player'>X</div></div>
-    <div>Scoreboard<div id='X-games'>X: 0</div><div id='O-games'>Y: 0</div></div>
+    <div>Scoreboard<div id='X-games'>X: 0</div><div id='O-games'>O: 0</div></div>
+    <div>Player 1 Name: <input type='text' id='x-player-name' placeholder="Enter Your Name"></div>
+    <div>Player 2 Name: <input type='text' id='o-player-name' placeholder="Enter Your Name"></div>
+    <button onclick='setPlayerNames()'>Submit</button>
+   
+   
     <table id='game-board'>
         <tr>
             <td id='1-1' class='col' onclick="togglePlace(event)"></td>

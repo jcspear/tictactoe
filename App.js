@@ -1,69 +1,79 @@
 //Game State Global Variables
-var turn = 'X';
-var clickedPlaces = [];
-var playerPlaces = { X:[], O:[] };
-var gamesWon = { X: 0, O: 0 };
+
+var gameState = {
+    X: {
+        spaces: [],
+        gamesWon: 0,
+        playerName: 'X'
+    },
+    O: {
+        spaces: [],
+        gamesWon: 0,
+        playerName: 'O'
+    },
+    currentPlayer: 'X',
+    gameOver: false
+}
 
 //Click handler
 var togglePlace = (event) => {
-    if (!clickedPlaces.includes(event.target.id)) {
-        event.target.textContent = turn;
-        clickedPlaces.push(event.target.id);
-        playerPlaces[turn].push(event.target.id);
-        turn = turn === 'X' ? 'O' : 'X';
-        document.getElementById('current-player').textContent = turn;
-        checkGameStatus();
+    if (!(gameState.X.spaces.concat(gameState.O.spaces)).includes(event.target.id) && !gameState.gameOver) {
+        event.target.textContent = gameState.currentPlayer;
+        gameState[gameState.currentPlayer].spaces.push(event.target.id);
+        checkGameStatus(gameState[gameState.currentPlayer].spaces);
+        gameState.currentPlayer = gameState.currentPlayer === 'X' ? 'O' : 'X';
+        document.getElementById('current-player').textContent = gameState[gameState.currentPlayer].playerName;
+        
     }
 }
 //Check Game State
-var checkGameStatus = () => {
-    for (var player in playerPlaces) {
-        var rows = { 1:3, 2:3, 3:3 };
-        var columns = { 1:3, 2:3, 3:3 };
-        var diagonal1 = ['1-1','2-2','3-3'];
-        var diagonal2 = ['3-1','2-2','1-3'];
-        var diagonal1Total = 3;
-        var diagonal2Total = 3;
+var checkGameStatus = (spaces) => {
+
+    var rows = { 1:3, 2:3, 3:3 };
+    var columns = { 1:3, 2:3, 3:3 };
+    var diagonal1 = ['1-1','2-2','3-3'];
+    var diagonal2 = ['3-1','2-2','1-3'];
+    var diagonal1Total = 3;
+    var diagonal2Total = 3;
+
+    spaces.forEach(place => {
+        row = place.split('-')[0];
+        col = place.split('-')[1];
+        rows[row]--;
+        columns[col]--;
+        if (diagonal1.includes(place)) { diagonal1Total--;};
+        if (diagonal2.includes(place)) { diagonal2Total--;};
+        if (anyZero(rows[row], columns[col], diagonal1Total, diagonal2Total)) {
+            endGame(gameState[gameState.currentPlayer].playerName);
+            gameState.gameOver = true;
+            
+        }
+    });
     
-        playerPlaces[player].forEach(place => {
-            row = place.split('-')[0];
-            col = place.split('-')[1];
-            rows[row]--;
-            columns[col]--;
-            if (diagonal1.includes(place)) { diagonal1Total--;};
-            if (diagonal2.includes(place)) { diagonal2Total--;};
-            if (anyZero(rows[row], columns[col], diagonal1Total, diagonal2Total)) {
-                turn = player;
-                endGame(player);
-                gamesWon[player]++;
-                document.getElementById(`${player}-games`).textContent = `${player}: ${gamesWon[player]}`;
-                return;
-            }
-        });
-    }
-    if (clickedPlaces.length === 9) {
+    if (gameState.X.spaces.concat(gameState.O.spaces).length === 9 && !gameState.gameOver) {
+        gameState.gameOver = true;
         endGame();
     }
 }
 //Display game outcome
-var endGame = (turn) => {
-    if (turn) {
-        alert(turn + ' wins!');
+var endGame = (player) => {
+    if (player) {
+        gameState[gameState.currentPlayer].gamesWon++;
+        document.getElementById(`${gameState.currentPlayer}-games`).textContent = `${gameState[gameState.currentPlayer].playerName}: ${gameState[gameState.currentPlayer].gamesWon}`;
+        alert(player + ' wins!');
     } else {
         alert('Tie Game');
     }
-    clearBoard();
 }
 //Reset all values
 var clearBoard = () => {
     var places = document.getElementsByClassName('col');
-    document.getElementById('current-player').textContent = 'X'
-    turn = 'X';
-    clickedPlaces = [];
-    playerPlaces = { X:[], O:[] };
     for (var i = 0; i < places.length; i++) {
         places[i].textContent = '';
     };
+    gameState.X.spaces = [];
+    gameState.O.spaces = [];
+    gameState.gameOver = false;
 }
 //Helper function to check if any arguments are zero
 var anyZero = function () {
@@ -72,4 +82,14 @@ var anyZero = function () {
         if (el === 0) output = true;
     })
     return output;
+}
+
+//Set Player Names
+var setPlayerNames = () => {
+    gameState.X.playerName = document.getElementById('x-player-name').value + ' - X';
+    gameState.O.playerName = document.getElementById('o-player-name').value + ' - O';
+    document.getElementById(`X-games`).textContent = `${gameState.X.playerName}: ${gameState.X.gamesWon}`;
+    document.getElementById(`O-games`).textContent = `${gameState.O.playerName}: ${gameState.O.gamesWon}`;
+    document.getElementById('current-player').textContent = gameState[gameState.currentPlayer].playerName;
+
 }
